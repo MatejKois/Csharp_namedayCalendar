@@ -32,6 +32,4 @@
             return new DateTime(DateTime.Now.Year, Month, Day);
         }
     }
-
-
 }

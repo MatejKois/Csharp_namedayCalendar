@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Reflection.PortableExecutable;
 using System.Text.RegularExpressions;
 
 namespace Uniza.Namedays
@@ -9,7 +8,7 @@ namespace Uniza.Namedays
         /// <summary>
         /// Contains all the namedays
         /// </summary>
-        private readonly List<Nameday> _namedays = new List<Nameday>();
+        private readonly List<Nameday> _namedays = new();
 
         /// <summary>
         /// Returns number of names in the calendar
@@ -165,7 +164,7 @@ namespace Uniza.Namedays
             {
                 reader = new StreamReader(file.FullName);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new Exception("Error parsing file!");
             }
@@ -183,7 +182,7 @@ namespace Uniza.Namedays
                         day = Int32.Parse(splittedLine[0].Split(" ")[0].TrimEnd('.'));
                         month = Int32.Parse(splittedLine[0].Split(" ")[1].TrimEnd('.'));
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         throw new Exception("Error parsing file!");
                     }
@@ -211,7 +210,7 @@ namespace Uniza.Namedays
             {
                 writer = new StreamWriter(file.FullName);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new Exception("Error opening file!");
             }
@@ -224,12 +223,12 @@ namespace Uniza.Namedays
                     string line = "";
                     bool emptyLine = true; // if there are no names for the day, nothing will be written to file
 
-                    line.Append<>($"{day}. {month};");
+                    line += $"{day}. {month};";
 
                     foreach (var name in names)
                     {
                         emptyLine = false;
-                        line.Append<>($"{name};");
+                        line += $"{name};";
                     }
 
                     if (!emptyLine)
