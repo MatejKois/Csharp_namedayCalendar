@@ -12,32 +12,49 @@
         private const ConsoleKey SelectionExitEsc = ConsoleKey.Escape;
         // --------------------------------------
 
+        /// <summary>
+        /// Nameday calendar which holds all data
+        /// </summary>
         private readonly NamedayCalendar _namedayCalendar;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public ConsoleViewer()
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             _namedayCalendar = new NamedayCalendar();
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="file">File to initialize with</param>
         public ConsoleViewer(FileInfo file)
         {
             _namedayCalendar = new NamedayCalendar();
             _namedayCalendar.Load(file);
         }
 
+        /// <summary>
+        /// Starts the main loop of the app
+        /// </summary>
         public void MainLoop()
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8; // the console won't display diacritics without specifying this
             Console.InputEncoding = System.Text.Encoding.UTF8;
             while (true)
             {
+                Console.Clear();
                 DisplayCurrentState();
                 ShowMenu();
                 TakeInput();
             }
         }
 
+        /// <summary>
+        /// Displays current info about namedays
+        /// </summary>
         private void DisplayCurrentState()
         {
             string[] namesToday = _namedayCalendar[DateTime.Today];
@@ -90,6 +107,10 @@
             }
             Console.WriteLine();
         }
+
+        /// <summary>
+        /// Shows menu options for the user
+        /// </summary>
         private void ShowMenu()
         {
             Console.WriteLine();
@@ -103,6 +124,9 @@
             Console.WriteLine($"{SelectionExitNumber} | {SelectionExitEsc} - koniec");
         }
 
+        /// <summary>
+        /// Handles input from the user and calls relevant methods
+        /// </summary>
         private void TakeInput()
         {
             while (true)
@@ -138,6 +162,9 @@
             }
         }
 
+        /// <summary>
+        /// Is called when user selects load option
+        /// </summary>
         private void OnSelectionLoad()
         {
             Console.Clear();
@@ -159,6 +186,8 @@
                     FileInfo file = new FileInfo(verifiedFilename);
                     _namedayCalendar.Load(file);
                     Console.WriteLine("Nacitanie prebehlo uspesne.");
+                    Console.WriteLine("Pre navrat do menu stlacte Enter.");
+                    Console.ReadKey(true);
                     break;
                 }
                 catch (Exception)
@@ -202,6 +231,9 @@
             throw new Exception("Empty filename!");
         }
 
+        /// <summary>
+        /// Is called when user selects stats option
+        /// </summary>
         private void OnSelectionStatistics()
         {
             // groups names by start letter
@@ -251,14 +283,17 @@
             Console.ReadKey(true);
         }
 
+        /// <summary>
+        /// Is called when user selects option to search for names
+        /// </summary>
         private void OnSelectionSearchNames()
         {
             Console.Clear();
             Console.WriteLine("VYHLADAVANIE MIEN");
-            Console.Write("Pre ukoncenie stlacte Enter.");
 
             while (true)
             {
+                Console.WriteLine("Pre ukoncenie stlacte Enter.");
                 Console.Write("Zadajte meno (regularny vyraz): ");
                 string input = Console.ReadLine();
                 if (string.IsNullOrEmpty(input))
@@ -275,14 +310,17 @@
             }
         }
 
+        /// <summary>
+        /// Is called when user selects option to search by date
+        /// </summary>
         private void OnSelectionSearchNamesByDate()
         {
             Console.Clear();
             Console.WriteLine("VYHLADAVANIE MIEN PODLA DATUMU");
-            Console.Write("Pre ukoncenie stlacte Enter.");
 
             while (true)
             {
+                Console.WriteLine("Pre ukoncenie stlacte Enter.");
                 Console.Write("Zadajte den a mesiac: ");
                 string input = Console.ReadLine();
 
@@ -318,11 +356,17 @@
             }
         }
 
+        /// <summary>
+        /// Is called when user selects option to display a calendar for current month
+        /// </summary>
         private void OnSelectionDisplayCalendar()
         {
             new CalendarView(_namedayCalendar);
         }
 
+        /// <summary>
+        /// Is called on exit
+        /// </summary>
         private void OnSelectionExit()
         {
             Console.Clear();
