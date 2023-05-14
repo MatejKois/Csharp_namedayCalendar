@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Versioning;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Uniza.Namedays.ViewerConsoleApp
+﻿namespace Uniza.Namedays.ViewerConsoleApp
 {
     internal class ConsoleViewer
     {
@@ -19,10 +12,11 @@ namespace Uniza.Namedays.ViewerConsoleApp
         private const ConsoleKey SelectionExitEsc = ConsoleKey.Escape;
         // --------------------------------------
 
-        private NamedayCalendar _namedayCalendar;
+        private readonly NamedayCalendar _namedayCalendar;
 
         public ConsoleViewer()
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             _namedayCalendar = new NamedayCalendar();
         }
 
@@ -34,6 +28,8 @@ namespace Uniza.Namedays.ViewerConsoleApp
 
         public void MainLoop()
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8; // the console won't display diacritics without specifying this
+            Console.InputEncoding = System.Text.Encoding.UTF8;
             while (true)
             {
                 DisplayCurrentState();
@@ -208,6 +204,17 @@ namespace Uniza.Namedays.ViewerConsoleApp
 
         private void OnSelectionStatistics()
         {
+            // groups names by start letter
+            var nameStartLetterGroups = _namedayCalendar.GetNamedays()
+                .GroupBy(nd => nd.Name.Length > 0 ? nd.Name.Substring(0, 1) : "-")
+                .OrderBy(g => g.Key);
+
+            // groups names by their string length
+            var nameLengthGroups = _namedayCalendar.GetNamedays()
+                .GroupBy(nd => nd.Name.Length)
+                .OrderBy(g => g.Key);
+
+            Console.Clear();
             Console.WriteLine("STATISTIKA");
 
             Console.WriteLine($"Celkovy pocet mien v kalendari: {_namedayCalendar.NameCount}");
@@ -229,36 +236,91 @@ namespace Uniza.Namedays.ViewerConsoleApp
             Console.WriteLine($"  december: {_namedayCalendar.GetNamedays(12).Length}");
 
             Console.WriteLine("Pocet mien podla zaciatocnych pismen:");
-            for (int i = 65; i <= 90; i++) // ASCII values A-Z
+            foreach (var nameStartLetterGroup in nameStartLetterGroups)
             {
-                char letter = Convert.ToChar(i);
-                Console.WriteLine($"{letter}: {_namedayCalendar.GetNamedays($"^{letter}\\w*").Length}");
+                Console.WriteLine($"  {nameStartLetterGroup.Key}: {nameStartLetterGroup.Count()}");
             }
 
             Console.WriteLine("Pocet mien podla dlzky znakov:");
-            var nameLengthGroups = _namedayCalendar.GetNamedays().GroupBy(nd => nd.Name.Length).OrderBy(g => g.Key);
             foreach (var nameLengthGroup in nameLengthGroups)
             {
                 Console.WriteLine($"  {nameLengthGroup.Key}: {nameLengthGroup.Count()}");
             }
 
-            Console.WriteLine("Pre ukoncenie stlacte Enter alebo inu klavesu");
+            Console.WriteLine("Pre ukoncenie stlacte Enter.");
             Console.ReadKey(true);
         }
 
         private void OnSelectionSearchNames()
         {
-            throw new NotImplementedException();
+            Console.Clear();
+            Console.WriteLine("VYHLADAVANIE MIEN");
+            Console.Write("Pre ukoncenie stlacte Enter.");
+
+            while (true)
+            {
+                Console.Write("Zadajte meno (regularny vyraz): ");
+                string input = Console.ReadLine();
+                if (string.IsNullOrEmpty(input))
+                {
+                    break;
+                }
+
+                Nameday[] fetched = _namedayCalendar.GetNamedays(input);
+
+                for (int i = 0; i < fetched.Length; i++)
+                {
+                    Console.WriteLine($"  {i + 1}. {fetched[i].Name} ({fetched[i].DayMonth.Day}.{fetched[i].DayMonth.Month})");
+                }
+            }
         }
 
         private void OnSelectionSearchNamesByDate()
         {
-            throw new NotImplementedException();
+            Console.Clear();
+            Console.WriteLine("VYHLADAVANIE MIEN PODLA DATUMU");
+            Console.Write("Pre ukoncenie stlacte Enter.");
+
+            while (true)
+            {
+                Console.Write("Zadajte den a mesiac: ");
+                string input = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(input))
+                {
+                    break;
+                }
+
+                string[] splittedInput = input.Split(".");
+
+                try
+                {
+                    if (splittedInput.Length != 2)
+                    {
+                        throw new Exception();
+                    }
+
+                    string[] fetchedNames = _namedayCalendar[Int32.Parse(splittedInput[0]), Int32.Parse(splittedInput[1])];
+                    if (fetchedNames.Length == 0)
+                    {
+                        Console.WriteLine("  Neboli najdene ziadne mena");
+                        continue;
+                    }
+                    for (int i = 0; i < fetchedNames.Length; i++)
+                    {
+                        Console.WriteLine($"  {i + 1}. {fetchedNames[i]}");
+                    }
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Nespravny format!");
+                }
+            }
         }
 
         private void OnSelectionDisplayCalendar()
         {
-            throw new NotImplementedException();
+            new CalendarView(_namedayCalendar);
         }
 
         private void OnSelectionExit()

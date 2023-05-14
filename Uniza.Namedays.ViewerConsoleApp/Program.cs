@@ -1,5 +1,7 @@
 ﻿using Uniza.Namedays;
 using Uniza.Namedays.ViewerConsoleApp;
 
-ConsoleViewer viewer = new ConsoleViewer();
+FileInfo fileInfo = new FileInfo("namedays-sk.csv");
+
+ConsoleViewer viewer = new ConsoleViewer(fileInfo);
 viewer.MainLoop();
