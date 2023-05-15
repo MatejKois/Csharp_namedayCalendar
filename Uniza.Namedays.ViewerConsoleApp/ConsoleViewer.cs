@@ -22,7 +22,6 @@
         /// </summary>
         public ConsoleViewer()
         {
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
             _namedayCalendar = new NamedayCalendar();
         }
 
@@ -30,10 +29,20 @@
         /// Constructor
         /// </summary>
         /// <param name="file">File to initialize with</param>
-        public ConsoleViewer(FileInfo file)
+        public ConsoleViewer(string filepath)
         {
             _namedayCalendar = new NamedayCalendar();
-            _namedayCalendar.Load(file);
+            try
+            {
+                _namedayCalendar.Load(new FileInfo(VerifyFilename(filepath)));
+                Console.WriteLine("Nacitanie prebehlo uspesne.");
+                Console.WriteLine();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Pri nacitani doslo k chybe...");
+                Console.WriteLine();
+            }
         }
 
         /// <summary>
@@ -45,10 +54,10 @@
             Console.InputEncoding = System.Text.Encoding.UTF8;
             while (true)
             {
-                Console.Clear();
                 DisplayCurrentState();
                 ShowMenu();
                 TakeInput();
+                Console.Clear();
             }
         }
 
