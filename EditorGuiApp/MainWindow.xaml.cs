@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Uniza.Namedays;
 
 namespace EditorGuiApp
 {
@@ -20,17 +13,52 @@ namespace EditorGuiApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        public List<string> Namedays { get; set; }
+        private readonly NamedayCalendar _namedayCalendar = new();
+        private ObservableCollection<string> SelectedNames { get; } = new();
 
         public MainWindow()
         {
             InitializeComponent();
+            _namedayCalendar.Load(new FileInfo("namedays-sk.csv"));
+            SelectedDateListBox.ItemsSource = SelectedNames;
+
+            var names = _namedayCalendar[DateTime.Today];
+            foreach (var name in names)
+            {
+                SelectedNames.Add(name);
+            }
+
+            SelectedDateTextBox.Clear();
+            SelectedDateTextBox.SelectedText = $"{DateTime.Today.ToShortDateString()} celebrates:";
         }
 
         private void Calendar_OnDayButtonClick(object sender, SelectionChangedEventArgs e)
         {
-            DateTime selectedDate = Calendar.SelectedDate ?? DateTime.MinValue;
-            MessageBox.Show($"Selected date: {selectedDate.ToShortDateString()}");
+            if (sender is Calendar calendar)
+            {
+                DateTime selectedDate = calendar.SelectedDate ?? DateTime.MinValue;
+
+                if (SelectedDateTextBox != null)
+                {
+                    SelectedDateTextBox.Clear();
+                    SelectedDateTextBox.SelectedText = $"{selectedDate.ToShortDateString()} celebrates:";
+                }
+
+                if (SelectedDateListBox != null)
+                {
+                    SelectedNames.Clear();
+                    var names = _namedayCalendar[selectedDate];
+                    foreach (var name in names)
+                    {
+                        SelectedNames.Add(name);
+                    }
+                }
+            }
+        }
+
+        private void TodayJumpButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            Calendar.SelectedDate = DateTime.Today;
         }
     }
 }
