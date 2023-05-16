@@ -3,64 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:EditorGuiApp"
         mc:Ignorable="d"
         Title="Namedays" Height="450" Width="800">
-
-    <Window.Resources>
-        <Style x:Key="CalendarDayButtonStyle" TargetType="CalendarDayButton">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="CalendarDayButton">
-                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                            <Grid Margin="3">
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Grid>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="LightGray"/>
-                            </Trigger>
-                            <Trigger Property="IsToday" Value="True">
-                                <Setter Property="Background" Value="LightBlue"></Setter>
-                            </Trigger>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="DarkGray"></Setter>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Window.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <GroupBox Grid.Row="0" Grid.Column="0" Header="Editor" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3">
 
-        </GroupBox>
-        <GroupBox Grid.Row="0" Grid.Column="1" Header="Calendar" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="3">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Button Grid.Row="0" Width="70" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" Name="TodayJumpButton" Content="Today" Click="TodayJumpButton_OnClick"/>
-                <Grid Grid.Row="1" Width="190" Margin="3">
-                    <Calendar Width="180" Height="180" HorizontalContentAlignment="Center" x:Name="Calendar" DisplayMode="Month" SelectedDatesChanged="Calendar_OnDayButtonClick" CalendarDayButtonStyle="{StaticResource CalendarDayButtonStyle}" SelectedDate="{x:Static sys:DateTime.Today}"/>
-                </Grid>
-                <Grid Grid.Row="2"  Width="190" Margin="1">
-                    <TextBox IsReadOnly="True" Width="180" Height="30" BorderThickness="0" HorizontalContentAlignment="Left" VerticalContentAlignment="Bottom" x:Name="SelectedDateTextBox" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </Grid>
-                <Grid Grid.Row="3"  Width="190" Margin="3">
-                    <ListBox Width="180" Height="55" HorizontalContentAlignment="Left" x:Name="SelectedDateListBox" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </Grid>
-            </Grid>
-        </GroupBox>
+        <Frame Grid.Row="0" Grid.Column="0" x:Name="EditorFrame" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+        <Frame Grid.Row="0" Grid.Column="1" x:Name="CalendarFrame" HorizontalAlignment="Right" VerticalAlignment="Stretch"/>
     </Grid>
 </Window>

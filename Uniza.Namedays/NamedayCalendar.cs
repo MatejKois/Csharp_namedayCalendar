@@ -179,8 +179,8 @@ namespace Uniza.Namedays
                     int month;
                     try
                     {
-                        day = Int32.Parse(splittedLine[0].Split(" ")[0].TrimEnd('.'));
-                        month = Int32.Parse(splittedLine[0].Split(" ")[1].TrimEnd('.'));
+                        day = int.Parse(splittedLine[0].Split(" ")[0].TrimEnd('.'));
+                        month = int.Parse(splittedLine[0].Split(" ")[1].TrimEnd('.'));
                     }
                     catch (Exception)
                     {
