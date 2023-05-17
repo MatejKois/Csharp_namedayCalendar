@@ -12,7 +12,7 @@ namespace Uniza.Namedays.EditorGuiApp
     /// </summary>
     public partial class CalendarPage : Page
     {
-        public NamedayCalendar NamedayCalendar { get;  set; }
+        private NamedayCalendar NamedayCalendar { get; }
         private ObservableCollection<string> SelectedNames { get; } = new();
 
         public CalendarPage(ref NamedayCalendar namedayCalendar)
@@ -24,15 +24,15 @@ namespace Uniza.Namedays.EditorGuiApp
 
             Calendar.SelectedDate = DateTime.Today;
 
-            UpdateSelection();
+            Refresh();
         }
 
         private void Calendar_OnDayButtonClick(object sender, SelectionChangedEventArgs e)
         {
-            UpdateSelection();
+            Refresh();
         }
 
-        public void UpdateSelection()
+        public void Refresh()
         {
             DateTime selectedDate = Calendar.SelectedDate ?? DateTime.MinValue;
 
@@ -59,6 +59,8 @@ namespace Uniza.Namedays.EditorGuiApp
         private void TodayJumpButton_OnClick(object sender, RoutedEventArgs e)
         {
             Calendar.SelectedDate = DateTime.Today;
+            Calendar.DisplayDate = DateTime.Today;
+            Refresh();
         }
     }
 }

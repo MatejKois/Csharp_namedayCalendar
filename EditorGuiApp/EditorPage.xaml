@@ -1,0 +1,79 @@
+﻿<Page x:Class="Uniza.Namedays.EditorGuiApp.EditorPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Uniza.Namedays.EditorGuiApp"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="606"
+      Title="EditorPage">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <GroupBox Grid.Row="0" Grid.Column="0" Header="Editor" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Grid.Column="0">
+                    <GroupBox  Height="Auto" Header="Filter" Margin="3">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Margin="3" BorderThickness="0" IsReadOnly="True">Month:</TextBox>
+                                <ComboBox Grid.Column="1" MinWidth="80" Name="SelectedMonthBox" Margin="3">
+                                    <ComboBoxItem Content="" />
+                                    <ComboBoxItem Content="January" />
+                                    <ComboBoxItem Content="February" />
+                                    <ComboBoxItem Content="March" />
+                                    <ComboBoxItem Content="April" />
+                                    <ComboBoxItem Content="May" />
+                                    <ComboBoxItem Content="June" />
+                                    <ComboBoxItem Content="July" />
+                                    <ComboBoxItem Content="August" />
+                                    <ComboBoxItem Content="September" />
+                                    <ComboBoxItem Content="October" />
+                                    <ComboBoxItem Content="November" />
+                                    <ComboBoxItem Content="December" />
+                                </ComboBox>
+                            </Grid>
+                            <Grid Grid.Column="1" HorizontalAlignment="Right">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" Margin="3" BorderThickness="0" IsReadOnly="True">Regex filter:</TextBox>
+                                <TextBox Width="100" Height="20" Grid.Column="1" Margin="3"/>
+                            </Grid>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+
+                <Grid Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                    <Button Width="80" Height="Auto" Name="ClearFilter" FontSize="13" Content="Clear Filter" Margin="12"/>
+                </Grid>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</Page>

@@ -24,7 +24,7 @@
                                 <Setter Property="Background" Value="LightGray"/>
                             </Trigger>
                             <Trigger Property="IsToday" Value="True">
-                                <Setter Property="Background" Value="LightBlue"></Setter>
+                                <Setter Property="Background" Value="LightBlue"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
                                 <Setter Property="Background" Value="DarkGray"></Setter>
@@ -40,23 +40,36 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
+
         <GroupBox Grid.Row="0" Grid.Column="0" Header="Calendar" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="3">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Button Grid.Row="0" Width="70" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" Name="TodayJumpButton" Content="Today" Click="TodayJumpButton_OnClick"/>
-                <Grid Grid.Row="1" Width="190" Margin="3">
+
+                <Grid Grid.Row="0" Width="190" VerticalAlignment="Top"  Margin="3">
+                    <Button Width="70" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" Name="TodayJumpButton" Content="Today" Click="TodayJumpButton_OnClick"/>
+                </Grid>
+
+                <Grid Grid.Row="1" Width="190" VerticalAlignment="Top"  Margin="3">
                     <Calendar Width="180" Height="180" HorizontalContentAlignment="Center" x:Name="Calendar" DisplayMode="Month" SelectedDatesChanged="Calendar_OnDayButtonClick" CalendarDayButtonStyle="{StaticResource CalendarDayButtonStyle}" SelectedDate="{x:Static sys:DateTime.Today}"/>
                 </Grid>
-                <Grid Grid.Row="2"  Width="190" Margin="1">
-                    <TextBox IsReadOnly="True" Width="180" Height="30" BorderThickness="0" HorizontalContentAlignment="Left" VerticalContentAlignment="Bottom" x:Name="SelectedDateTextBox" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </Grid>
-                <Grid Grid.Row="3"  Width="190" Margin="3">
-                    <ListBox Width="180" Height="55" HorizontalContentAlignment="Left" x:Name="SelectedDateListBox" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                <Grid Grid.Row="2" Width="190" VerticalAlignment="Bottom" Margin="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Margin="1">
+                        <TextBox IsReadOnly="True" Width="180" Height="30" BorderThickness="0" HorizontalContentAlignment="Left" VerticalContentAlignment="Bottom" x:Name="SelectedDateTextBox" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <Grid Grid.Row="1">
+                        <ListBox Width="180" Height="Auto" MinHeight="55" HorizontalContentAlignment="Left" x:Name="SelectedDateListBox" FontSize="15" HorizontalAlignment="Center"/>
+                    </Grid>
                 </Grid>
             </Grid>
         </GroupBox>

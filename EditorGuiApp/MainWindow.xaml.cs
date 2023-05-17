@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using System.IO;
+using Microsoft.Win32;
 using System.Windows;
 using Uniza.Namedays;
 using Uniza.Namedays.EditorGuiApp;
@@ -10,14 +11,19 @@ namespace EditorGuiApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        private NamedayCalendar _namedayCalendar;
-        private CalendarPage _calendarPage;
+        private readonly NamedayCalendar _namedayCalendar;
+        private readonly CalendarPage _calendarPage;
 
         public MainWindow()
         {
             InitializeComponent();
 
             _namedayCalendar = new NamedayCalendar();
+
+            _namedayCalendar.Load(new FileInfo("namedays-sk.csv")); // debug
+
+            EditorFrame.Content = new EditorPage();
+
             _calendarPage = new CalendarPage(ref _namedayCalendar);
             CalendarFrame.Content = _calendarPage;
         }
@@ -26,7 +32,7 @@ namespace EditorGuiApp
         {
             if (_namedayCalendar.GetNamedays().Length != 0)
             {
-                var result = MessageBox.Show("Are you sure you want to reset the calendar?", "Confirm Reset", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                var result = MessageBox.Show("Are you sure you want to reset the calendar?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.No)
                 {
                     return;
@@ -40,7 +46,7 @@ namespace EditorGuiApp
         {
             if (_namedayCalendar.GetNamedays().Length != 0)
             {
-                var result = MessageBox.Show("Are you sure you want to reset the calendar?", "Confirm Reset", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                var result = MessageBox.Show("Discard all unsaved changes?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.No)
                 {
                     return;
@@ -53,7 +59,7 @@ namespace EditorGuiApp
             {
                 string selectedFileName = openFileDialog.FileName;
                 _namedayCalendar.Load(new System.IO.FileInfo(selectedFileName));
-                _calendarPage.UpdateSelection();
+                _calendarPage.Refresh();
             }
         }
 
@@ -76,7 +82,7 @@ namespace EditorGuiApp
         /// <summary>
         /// Shows information about app via messagebox
         /// </summary>
-        private void About_OnClick(object sender, RoutedEventArgs e)
+        private void AboutMenuItem_OnClick(object sender, RoutedEventArgs e)
         {
             string applicationName = "Namedays";
             string version = "1.0";
