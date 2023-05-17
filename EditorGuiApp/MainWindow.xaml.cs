@@ -11,9 +11,19 @@ namespace EditorGuiApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// NamedayCalendar - a calendar shared by all the app components
+        /// </summary>
         private readonly NamedayCalendar _namedayCalendar;
+
+        /// <summary>
+        /// CalendarPage gui component
+        /// </summary>
         private readonly CalendarPage _calendarPage;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -28,6 +38,9 @@ namespace EditorGuiApp
             CalendarFrame.Content = _calendarPage;
         }
 
+        /// <summary>
+        /// Resets the calendar
+        /// </summary>
         private void NewMenuItem_OnClick(object sender, RoutedEventArgs e)
         {
             if (_namedayCalendar.GetNamedays().Length != 0)
@@ -42,6 +55,9 @@ namespace EditorGuiApp
             _namedayCalendar.Clear();
         }
 
+        /// <summary>
+        /// Provides support for loading the calendar from a .csv file
+        /// </summary>
         private void OpenMenuItem_OnClick(object sender, RoutedEventArgs e)
         {
             if (_namedayCalendar.GetNamedays().Length != 0)
@@ -63,6 +79,9 @@ namespace EditorGuiApp
             }
         }
 
+        /// <summary>
+        /// Provides support for saving the calendar to a .csv file
+        /// </summary>
         private void SaveAsMenuItem_OnClick(object sender, RoutedEventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
@@ -74,6 +93,9 @@ namespace EditorGuiApp
             }
         }
 
+        /// <summary>
+        /// Exits the app
+        /// </summary>
         private void ExitMenuItem_OnClick(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
@@ -86,7 +108,7 @@ namespace EditorGuiApp
         {
             string applicationName = "Namedays";
             string version = "1.0";
-            string name = "Stefan Zub";
+            string name = "Matej Kois";
             int creationYear = 2023;
             string description = "This application is designed for editing and viewing namedays.";
 

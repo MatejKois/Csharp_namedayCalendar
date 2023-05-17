@@ -12,11 +12,30 @@ namespace Uniza.Namedays.EditorGuiApp
     /// </summary>
     public partial class EditorPage : Page
     {
+        /// <summary>
+        /// NamedayCalendar - is initialized as a reference to a calendar shared by all the app components
+        /// </summary>
         private NamedayCalendar NamedayCalendar { get; }
+
+        /// <summary>
+        /// Contains namedays to display in the listbox based on the filter selection
+        /// </summary>
         private ObservableCollection<Nameday> NamedaysInFilterOutput { get; } = new();
+
+        /// <summary>
+        /// Month selected in the filter
+        /// </summary>
         private int FilterMonth { get; set; }
+
+        /// <summary>
+        /// Regex to filter the namedays names with
+        /// </summary>
         private string FilterRegex { get; set; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="namedayCalendar">Reference to a calendar shared by all the app components</param>
         public EditorPage(ref NamedayCalendar namedayCalendar)
         {
             InitializeComponent();
@@ -30,6 +49,9 @@ namespace Uniza.Namedays.EditorGuiApp
             RefreshFilterOutput();
         }
 
+        /// <summary>
+        /// Is called when user selects different month in the filter
+        /// </summary>
         private void Filter_OnMonthSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox comboBox = (ComboBox)sender;
@@ -58,12 +80,18 @@ namespace Uniza.Namedays.EditorGuiApp
             RefreshFilterOutput();
         }
 
+        /// <summary>
+        /// Is called whenever the regex input in the filter is changed
+        /// </summary>
         private void Filter_OnFilterInputChanged(object sender, RoutedEventArgs e)
         {
             FilterRegex = RegexFilterInput.Text;
             RefreshFilterOutput();
         }
 
+        /// <summary>
+        /// Is called on filter clear button press
+        /// </summary>
         private void Filter_OnFilterClearPressed(object sender, RoutedEventArgs e)
         {
             var defaultSelection = SelectedMonthBox.Items.Cast<object>().FirstOrDefault(item => item.ToString() == "");
@@ -73,6 +101,9 @@ namespace Uniza.Namedays.EditorGuiApp
             RefreshFilterOutput();
         }
 
+        /// <summary>
+        /// Refreshes the output from the filter in the listbox
+        /// </summary>
         private void RefreshFilterOutput()
         {
             try
@@ -88,7 +119,7 @@ namespace Uniza.Namedays.EditorGuiApp
             }
             catch (Exception)
             {
-                // ignored, sometimes user enters forbidden regex characters, output won't refresh in that case
+                // ignored, sometimes user enters forbidden regex characters and Exception is thrown on "var namedays" query, output won't refresh in that case
             }
         }
     }
