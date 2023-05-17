@@ -13,6 +13,20 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
+        <Grid>
+            <Menu>
+                <MenuItem Header="_File">
+                    <MenuItem Header="_New" Click="NewMenuItem_OnClick" />
+                    <MenuItem Header="_Open..." Click="OpenMenuItem_OnClick" />
+                    <MenuItem Header="_Save As..." Click="SaveAsMenuItem_OnClick" />
+                    <MenuItem Header="_Exit" Click="ExitMenuItem_OnClick" />
+                </MenuItem>
+                <MenuItem Header="_Help">
+                    <MenuItem Header="_About..." Click="About_OnClick" />
+                </MenuItem>
+            </Menu>
+        </Grid>
+
         <Frame Grid.Row="0" Grid.Column="0" x:Name="EditorFrame" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
         <Frame Grid.Row="0" Grid.Column="1" x:Name="CalendarFrame" HorizontalAlignment="Right" VerticalAlignment="Stretch"/>
     </Grid>

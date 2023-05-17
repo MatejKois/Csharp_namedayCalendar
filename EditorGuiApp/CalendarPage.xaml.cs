@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,43 +12,43 @@ namespace Uniza.Namedays.EditorGuiApp
     /// </summary>
     public partial class CalendarPage : Page
     {
-        private readonly NamedayCalendar _namedayCalendar = new();
+        public NamedayCalendar NamedayCalendar { get;  set; }
         private ObservableCollection<string> SelectedNames { get; } = new();
 
-        public CalendarPage()
+        public CalendarPage(ref NamedayCalendar namedayCalendar)
         {
             InitializeComponent();
 
-            _namedayCalendar.Load(new FileInfo("namedays-sk.csv"));
+            NamedayCalendar = namedayCalendar;
             SelectedDateListBox.ItemsSource = SelectedNames;
 
-            UpdateSelectedNames(DateTime.Today);
-            UpdateSelectedDateTextBox(DateTime.Today);
+            Calendar.SelectedDate = DateTime.Today;
+
+            UpdateSelection();
         }
 
         private void Calendar_OnDayButtonClick(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is Calendar calendar)
-            {
-                DateTime selectedDate = calendar.SelectedDate ?? DateTime.MinValue;
-
-                UpdateSelectedDateTextBox(selectedDate);
-                UpdateSelectedNames(selectedDate);
-            }
+            UpdateSelection();
         }
 
-        private void UpdateSelectedNames(DateTime selectedDate)
+        public void UpdateSelection()
         {
+            DateTime selectedDate = Calendar.SelectedDate ?? DateTime.MinValue;
+
+            // update listbox
+            if (NamedayCalendar == null)
+            {
+                return;
+            }
             SelectedNames.Clear();
-            var names = _namedayCalendar[selectedDate];
+            var names = NamedayCalendar[selectedDate];
             foreach (var name in names)
             {
                 SelectedNames.Add(name);
             }
-        }
 
-        private void UpdateSelectedDateTextBox(DateTime selectedDate)
-        {
+            // update textbox
             if (SelectedDateTextBox != null)
             {
                 SelectedDateTextBox.Clear();
