@@ -215,20 +215,17 @@
         {
             string[] splittedFilename = filename.Split(".");
 
-            if (splittedFilename.Length > 2)
+            if (splittedFilename.Length >= 2)
             {
-                throw new Exception("Incorrect filename format!");
-            }
-
-            if (splittedFilename.Length == 2)
-            {
-                if (splittedFilename[1] == "csv")
+                if (splittedFilename[^1] == "csv")
                 {
                     return filename;
                 }
 
-                Console.WriteLine($"Pripona opravena -> {splittedFilename[0] + ".csv"}");
-                return splittedFilename[0] + ".csv";
+                splittedFilename[^1] = ".csv";
+
+                Console.WriteLine($"Pripona opravena -> {String.Join("", splittedFilename)}");
+                return String.Join("", splittedFilename);
             }
 
             if (splittedFilename.Length == 1)
