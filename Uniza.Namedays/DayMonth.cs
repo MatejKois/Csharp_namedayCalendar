@@ -31,5 +31,23 @@
         {
             return new DateTime(DateTime.Now.Year, Month, Day);
         }
+
+        /// <summary>
+        /// String typecast operator
+        /// </summary>
+        /// <param name="dayMonth">String format of DayMonth</param>
+        public static explicit operator string(DayMonth dayMonth)
+        {
+            return $"{dayMonth.Day}.{dayMonth.Month}.";
+        }
+
+        /// <summary>
+        /// Overridden ToString to handle binding in EditorGui FilterOutputListBox DataTemplate
+        /// </summary>
+        /// <returns>String format of DayMonth</returns>
+        public override string ToString()
+        {
+            return $"{Day}.{Month}.";
+        }
     }
 }

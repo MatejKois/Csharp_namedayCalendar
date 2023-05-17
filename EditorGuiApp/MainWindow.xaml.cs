@@ -22,7 +22,7 @@ namespace EditorGuiApp
 
             _namedayCalendar.Load(new FileInfo("namedays-sk.csv")); // debug
 
-            EditorFrame.Content = new EditorPage();
+            EditorFrame.Content = new EditorPage(ref _namedayCalendar);
 
             _calendarPage = new CalendarPage(ref _namedayCalendar);
             CalendarFrame.Content = _calendarPage;

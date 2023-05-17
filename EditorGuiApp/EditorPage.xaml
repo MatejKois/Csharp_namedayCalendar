@@ -42,7 +42,7 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBox Margin="3" BorderThickness="0" IsReadOnly="True">Month:</TextBox>
-                                <ComboBox Grid.Column="1" MinWidth="80" Name="SelectedMonthBox" Margin="3">
+                                <ComboBox Grid.Column="1" MinWidth="80" Name="SelectedMonthBox" Margin="3" SelectionChanged="Filter_OnMonthSelectionChanged">
                                     <ComboBoxItem Content="" />
                                     <ComboBoxItem Content="January" />
                                     <ComboBoxItem Content="February" />
@@ -64,15 +64,26 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBox Grid.Column="0" Margin="3" BorderThickness="0" IsReadOnly="True">Regex filter:</TextBox>
-                                <TextBox Width="100" Height="20" Grid.Column="1" Margin="3"/>
+                                <TextBox Width="100" Height="20" Grid.Column="1" Name="RegexFilterInput" Margin="3" SelectionChanged="Filter_OnFilterInputChanged"/>
                             </Grid>
                         </Grid>
                     </GroupBox>
                 </Grid>
 
                 <Grid Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-                    <Button Width="80" Height="Auto" Name="ClearFilter" FontSize="13" Content="Clear Filter" Margin="12"/>
+                    <Button Width="80" Height="Auto" FontSize="13" Content="Clear Filter" Margin="12" Click="Filter_OnFilterClearPressed"/>
                 </Grid>
+
+                <ListBox Grid.Row="1" Grid.Column="0" Name="FilterOutputListBox" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock FontSize="10" Text="{Binding DayMonth}" d:DataContext="{d:SampleData Nameday}" />
+                                <TextBlock FontSize="13" Text="{Binding Name}" d:DataContext="{d:SampleData Nameday}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </Grid>
         </GroupBox>
     </Grid>

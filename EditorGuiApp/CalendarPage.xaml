@@ -54,7 +54,7 @@
                 </Grid>
 
                 <Grid Grid.Row="1" Width="190" VerticalAlignment="Top"  Margin="3">
-                    <Calendar Width="180" Height="180" HorizontalContentAlignment="Center" x:Name="Calendar" DisplayMode="Month" SelectedDatesChanged="Calendar_OnDayButtonClick" CalendarDayButtonStyle="{StaticResource CalendarDayButtonStyle}" SelectedDate="{x:Static sys:DateTime.Today}"/>
+                    <Calendar Width="180" Height="180" HorizontalContentAlignment="Center" x:Name="Calendar" DisplayMode="Month" SelectedDatesChanged="Calendar_OnDayButtonClick" CalendarDayButtonStyle="{StaticResource CalendarDayButtonStyle}" SelectedDate="{x:Static sys:DateTime.Today}" />
                 </Grid>
 
                 <Grid Grid.Row="2" Width="190" VerticalAlignment="Bottom" Margin="3">
