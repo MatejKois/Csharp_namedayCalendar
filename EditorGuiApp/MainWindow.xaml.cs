@@ -57,6 +57,8 @@ namespace EditorGuiApp
             }
 
             _namedayCalendar.Clear();
+            _calendarPage.Refresh();
+            _editorPage.RefreshFilterOutput();
         }
 
         /// <summary>

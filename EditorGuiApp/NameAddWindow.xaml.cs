@@ -38,6 +38,9 @@ namespace Uniza.Namedays.EditorGuiApp
             set => NamedayDatePicker.SelectedDate = value;
         }
 
+        /// <summary>
+        /// Is called on ok button press
+        /// </summary>
         private void OKButton_OnClick(object sender, RoutedEventArgs e)
         {
             DialogResult = true;

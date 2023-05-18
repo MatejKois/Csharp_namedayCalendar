@@ -161,6 +161,9 @@ namespace Uniza.Namedays.EditorGuiApp
             _calendarPage.Refresh();
         }
 
+        /// <summary>
+        /// Is called on add button press
+        /// </summary>
         private void Editor_OnAddButtonPressed(object sender, RoutedEventArgs e)
         {
             var nameAddWindow = new NamedayWindow();
@@ -176,11 +179,15 @@ namespace Uniza.Namedays.EditorGuiApp
             }
         }
 
+        /// <summary>
+        /// Is called on edit button press
+        /// </summary>
         private void Editor_OnEditButtonPressed(object sender, RoutedEventArgs e)
         {
             var selectedNameday = FilterOutputListBox.SelectedItem as Nameday?;
 
-            if (selectedNameday is null) {
+            if (selectedNameday is null)
+            {
                 return;
             }
 
@@ -199,6 +206,9 @@ namespace Uniza.Namedays.EditorGuiApp
             }
         }
 
+        /// <summary>
+        /// Is called on remove button press
+        /// </summary>
         private void Editor_OnRemoveButtonPressed(object sender, RoutedEventArgs e)
         {
             var selectedNameday = FilterOutputListBox.SelectedItem as Nameday?;
@@ -218,6 +228,9 @@ namespace Uniza.Namedays.EditorGuiApp
             RefreshFilterOutput();
         }
 
+        /// <summary>
+        /// Is called on show on calendar button press
+        /// </summary>
         private void Editor_OnShowOnCalendarButtonPressed(object sender, RoutedEventArgs e)
         {
             var selectedNameday = FilterOutputListBox.SelectedItem as Nameday?;
