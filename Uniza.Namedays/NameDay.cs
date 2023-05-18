@@ -1,16 +1,16 @@
 ﻿namespace Uniza.Namedays
 {
-    public record struct Nameday
+    public record struct Nameday : IComparable<Nameday>
     {
         /// <summary>
         /// Name of the person
         /// </summary>
-        public string Name { get; init; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Represents day and month of the person's nameday
         /// </summary>
-        public DayMonth DayMonth { get; init; }
+        public DayMonth DayMonth { get; set; }
 
         /// <summary>
         /// Constructor
@@ -21,6 +21,15 @@
         {
             Name = name;
             DayMonth = dayMonth;
+        }
+
+        public int CompareTo(Nameday other)
+        {
+            if (DayMonth.Month == other.DayMonth.Month)
+            {
+                return DayMonth.Day == other.DayMonth.Day ? 0 : DayMonth.Day > other.DayMonth.Day ? 1 : -1;
+            }
+            return DayMonth.Month == other.DayMonth.Month ? 0 : DayMonth.Month > other.DayMonth.Month ? 1 : -1;
         }
     }
 }

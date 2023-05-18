@@ -8,7 +8,7 @@ namespace Uniza.Namedays
         /// <summary>
         /// Contains all the namedays
         /// </summary>
-        private readonly List<Nameday> _namedays = new();
+        private List<Nameday> _namedays = new();
 
         /// <summary>
         /// Returns number of names in the calendar
@@ -152,6 +152,37 @@ namespace Uniza.Namedays
         public void Clear() => _namedays.Clear();
 
         /// <summary>
+        /// Updates values of a nameday
+        /// </summary>
+        /// <param name="oldNameday">Nameday to update</param>
+        /// <param name="newName">New name</param>
+        /// <param name="newDate">New date</param>
+        public void Update(Nameday oldNameday, string newName, DateTime newDate)
+        {
+            for (int i = 0; i < _namedays.Count; i++)
+            {
+                if (_namedays[i] == oldNameday)
+                {
+                    Nameday updatedNameday = new Nameday
+                    {
+                        Name = newName,
+                        DayMonth = new DayMonth(newDate.Day, newDate.Day)
+                    };
+
+                    _namedays[i] = updatedNameday;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sorts namedays by date
+        /// </summary>
+        public void Sort()
+        {
+            _namedays = _namedays.OrderBy(n => n).ToList();
+        }
+
+        /// <summary>
         /// Loads a calendar from a CSV file
         /// </summary>
         /// <param name="file">File to read from</param>
@@ -196,6 +227,7 @@ namespace Uniza.Namedays
                     }
                 }
             }
+            Sort();
         }
 
         /// <summary>

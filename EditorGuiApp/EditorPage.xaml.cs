@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EditorGuiApp;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
@@ -15,7 +17,7 @@ namespace Uniza.Namedays.EditorGuiApp
         /// <summary>
         /// NamedayCalendar - is initialized as a reference to a calendar shared by all the app components
         /// </summary>
-        private NamedayCalendar NamedayCalendar { get; }
+        private NamedayCalendar NamedayCalendar { get; set; }
 
         /// <summary>
         /// Contains namedays to display in the listbox based on the filter selection
@@ -120,6 +122,47 @@ namespace Uniza.Namedays.EditorGuiApp
             catch (Exception)
             {
                 // ignored, sometimes user enters forbidden regex characters and Exception is thrown on "var namedays" query, output won't refresh in that case
+            }
+        }
+
+        private void Editor_OnAddButtonPressed(object sender, RoutedEventArgs e)
+        {
+            var nameAddWindow = new NamedayWindow();
+            nameAddWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            nameAddWindow.Owner = Application.Current.Windows.OfType<Window>().SingleOrDefault(x => x.IsActive);
+
+            if (nameAddWindow.ShowDialog() == true)
+            {
+                var nameday = new Nameday(nameAddWindow.EnteredName, new DayMonth(nameAddWindow.NamedayDate.Day, nameAddWindow.NamedayDate.Month));
+                NamedayCalendar.Add(nameday);
+                NamedayCalendar.Sort();
+                RefreshFilterOutput();
+            }
+        }
+
+        private void Editor_OnEditButtonPressed(object sender, RoutedEventArgs e)
+        {
+            var selectedNameday = FilterOutputListBox.SelectedItem as Nameday?;
+
+            if (selectedNameday is null) {
+                return;
+            }
+
+            var nameEditWindow = new NamedayWindow();
+            nameEditWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            nameEditWindow.Owner = Application.Current.Windows.OfType<Window>().SingleOrDefault(x => x.IsActive);
+
+            if (selectedNameday != null)
+            {
+                nameEditWindow.EnteredName = selectedNameday.Value.Name;
+                nameEditWindow.NamedayDate = selectedNameday.Value.DayMonth.ToDateTime();
+            }
+
+            if (nameEditWindow.ShowDialog() == true)
+            {
+                NamedayCalendar.Update(selectedNameday.Value, nameEditWindow.EnteredName, nameEditWindow.NamedayDate);
+                NamedayCalendar.Sort();
+                RefreshFilterOutput();
             }
         }
     }
