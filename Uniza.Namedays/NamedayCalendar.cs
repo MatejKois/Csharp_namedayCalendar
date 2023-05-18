@@ -132,10 +132,12 @@ namespace Uniza.Namedays
         /// <param name="name">Name to remove</param>
         public void Remove(string name)
         {
-            var namedayToRemove = _namedays.FirstOrDefault(nd => nd.Name == name);
-            if (namedayToRemove != null)
+            for (int i = 0; i < _namedays.Count; i++)
             {
-                _namedays.Remove(namedayToRemove);
+                if (_namedays[i].Name == name)
+                {
+                    _namedays.RemoveAt(i);
+                }
             }
         }
 
@@ -166,7 +168,7 @@ namespace Uniza.Namedays
                     Nameday updatedNameday = new Nameday
                     {
                         Name = newName,
-                        DayMonth = new DayMonth(newDate.Day, newDate.Day)
+                        DayMonth = new DayMonth(newDate.Day, newDate.Month)
                     };
 
                     _namedays[i] = updatedNameday;

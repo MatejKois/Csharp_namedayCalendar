@@ -25,6 +25,11 @@ namespace Uniza.Namedays.EditorGuiApp
         private ObservableCollection<Nameday> NamedaysInFilterOutput { get; } = new();
 
         /// <summary>
+        /// Reference to the calendar page
+        /// </summary>
+        private readonly CalendarPage _calendarPage;
+
+        /// <summary>
         /// Month selected in the filter
         /// </summary>
         private int FilterMonth { get; set; }
@@ -38,7 +43,7 @@ namespace Uniza.Namedays.EditorGuiApp
         /// Constructor
         /// </summary>
         /// <param name="namedayCalendar">Reference to a calendar shared by all the app components</param>
-        public EditorPage(ref NamedayCalendar namedayCalendar)
+        public EditorPage(ref NamedayCalendar namedayCalendar, ref CalendarPage calendarPage)
         {
             InitializeComponent();
 
@@ -46,7 +51,15 @@ namespace Uniza.Namedays.EditorGuiApp
             FilterRegex = "";
 
             NamedayCalendar = namedayCalendar;
+            _calendarPage = calendarPage;
+
             FilterOutputListBox.ItemsSource = NamedaysInFilterOutput;
+
+            EditButton.IsEnabled = false;
+            RemoveButton.IsEnabled = false;
+            ShowOnCalendarButton.IsEnabled = false;
+
+            CountButton.Text = $"Count: - / {NamedayCalendar.NameCount}";
 
             RefreshFilterOutput();
         }
@@ -91,6 +104,28 @@ namespace Uniza.Namedays.EditorGuiApp
             RefreshFilterOutput();
         }
 
+        private void Editor_OnListSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedNameday = FilterOutputListBox.SelectedItem as Nameday?;
+
+            if (selectedNameday is null)
+            {
+                EditButton.IsEnabled = false;
+                RemoveButton.IsEnabled = false;
+                ShowOnCalendarButton.IsEnabled = false;
+
+                CountButton.Text = $"Count: - / {NamedayCalendar.NameCount}";
+
+                return;
+            }
+
+            EditButton.IsEnabled = true;
+            RemoveButton.IsEnabled = true;
+            ShowOnCalendarButton.IsEnabled = true;
+
+            CountButton.Text = $"Count: {Array.IndexOf(NamedayCalendar.GetNamedays(), selectedNameday.Value) + 1} / {NamedayCalendar.NameCount}";
+        }
+
         /// <summary>
         /// Is called on filter clear button press
         /// </summary>
@@ -123,6 +158,7 @@ namespace Uniza.Namedays.EditorGuiApp
             {
                 // ignored, sometimes user enters forbidden regex characters and Exception is thrown on "var namedays" query, output won't refresh in that case
             }
+            _calendarPage.Refresh();
         }
 
         private void Editor_OnAddButtonPressed(object sender, RoutedEventArgs e)
@@ -152,11 +188,8 @@ namespace Uniza.Namedays.EditorGuiApp
             nameEditWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             nameEditWindow.Owner = Application.Current.Windows.OfType<Window>().SingleOrDefault(x => x.IsActive);
 
-            if (selectedNameday != null)
-            {
-                nameEditWindow.EnteredName = selectedNameday.Value.Name;
-                nameEditWindow.NamedayDate = selectedNameday.Value.DayMonth.ToDateTime();
-            }
+            nameEditWindow.EnteredName = selectedNameday.Value.Name;
+            nameEditWindow.NamedayDate = selectedNameday.Value.DayMonth.ToDateTime();
 
             if (nameEditWindow.ShowDialog() == true)
             {
@@ -164,6 +197,39 @@ namespace Uniza.Namedays.EditorGuiApp
                 NamedayCalendar.Sort();
                 RefreshFilterOutput();
             }
+        }
+
+        private void Editor_OnRemoveButtonPressed(object sender, RoutedEventArgs e)
+        {
+            var selectedNameday = FilterOutputListBox.SelectedItem as Nameday?;
+
+            if (selectedNameday is null)
+            {
+                return;
+            }
+
+            var result = MessageBox.Show("Delete the selected nameday?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
+
+            NamedayCalendar.Remove(selectedNameday.Value.Name);
+            RefreshFilterOutput();
+        }
+
+        private void Editor_OnShowOnCalendarButtonPressed(object sender, RoutedEventArgs e)
+        {
+            var selectedNameday = FilterOutputListBox.SelectedItem as Nameday?;
+
+            if (selectedNameday is null)
+            {
+                return;
+            }
+
+            _calendarPage.Calendar.SelectedDate = selectedNameday.Value.DayMonth.ToDateTime();
+            _calendarPage.Calendar.DisplayDate = selectedNameday.Value.DayMonth.ToDateTime();
+            _calendarPage.Refresh();
         }
     }
 }

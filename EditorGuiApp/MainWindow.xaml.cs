@@ -30,12 +30,10 @@ namespace EditorGuiApp
 
             _namedayCalendar = new NamedayCalendar();
 
-            _namedayCalendar.Load(new FileInfo("namedays-sk.csv")); // debug
-
-            EditorFrame.Content = new EditorPage(ref _namedayCalendar);
-
             _calendarPage = new CalendarPage(ref _namedayCalendar);
             CalendarFrame.Content = _calendarPage;
+
+            EditorFrame.Content = new EditorPage(ref _namedayCalendar, ref _calendarPage);
         }
 
         /// <summary>
