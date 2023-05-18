@@ -141,7 +141,7 @@ namespace Uniza.Namedays.EditorGuiApp
         /// <summary>
         /// Refreshes the output from the filter in the listbox
         /// </summary>
-        private void RefreshFilterOutput()
+        public void RefreshFilterOutput()
         {
             try
             {

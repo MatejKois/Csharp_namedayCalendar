@@ -22,6 +22,11 @@ namespace EditorGuiApp
         private readonly CalendarPage _calendarPage;
 
         /// <summary>
+        /// EditorPage gui component
+        /// </summary>
+        private readonly EditorPage _editorPage;
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public MainWindow()
@@ -31,9 +36,10 @@ namespace EditorGuiApp
             _namedayCalendar = new NamedayCalendar();
 
             _calendarPage = new CalendarPage(ref _namedayCalendar);
-            CalendarFrame.Content = _calendarPage;
+            _editorPage = new EditorPage(ref _namedayCalendar, ref _calendarPage);
 
-            EditorFrame.Content = new EditorPage(ref _namedayCalendar, ref _calendarPage);
+            CalendarFrame.Content = _calendarPage;
+            EditorFrame.Content = _editorPage;
         }
 
         /// <summary>
@@ -74,6 +80,7 @@ namespace EditorGuiApp
                 string selectedFileName = openFileDialog.FileName;
                 _namedayCalendar.Load(new System.IO.FileInfo(selectedFileName));
                 _calendarPage.Refresh();
+                _editorPage.RefreshFilterOutput();
             }
         }
 
