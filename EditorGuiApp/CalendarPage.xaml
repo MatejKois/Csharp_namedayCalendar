@@ -68,7 +68,7 @@
                     </Grid>
 
                     <Grid Grid.Row="1">
-                        <ListBox Width="180" Height="Auto" MinHeight="55" HorizontalContentAlignment="Left" x:Name="SelectedDateListBox" FontSize="15" HorizontalAlignment="Center"/>
+                        <ListBox Width="180" Height="Auto" MinHeight="55" MaxHeight="100" HorizontalContentAlignment="Left" x:Name="SelectedDateListBox" FontSize="15" HorizontalAlignment="Center"/>
                     </Grid>
                 </Grid>
             </Grid>

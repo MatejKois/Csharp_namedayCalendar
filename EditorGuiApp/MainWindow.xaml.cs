@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System.Windows;
 using Uniza.Namedays;
 using Uniza.Namedays.EditorGuiApp;
@@ -57,7 +56,6 @@ namespace EditorGuiApp
             }
 
             _namedayCalendar.Clear();
-            _calendarPage.Refresh();
             _editorPage.RefreshFilterOutput();
         }
 
@@ -81,7 +79,6 @@ namespace EditorGuiApp
             {
                 string selectedFileName = openFileDialog.FileName;
                 _namedayCalendar.Load(new System.IO.FileInfo(selectedFileName));
-                _calendarPage.Refresh();
                 _editorPage.RefreshFilterOutput();
             }
         }
